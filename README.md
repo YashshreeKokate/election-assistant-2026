@@ -1,16 +1,27 @@
-# React + Vite
+# Election Assistant 2026
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive React web application designed to guide different types of voters (First-time, NRI, Student, Senior, PwD, and Municipal) through the election process in India.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Interactive Profiles**: Choose from 6 distinct voter profiles.
+- **Step-by-Step Guide**: Expandable checklists customized for each voter type.
+- **Dynamic Timeline**: A responsive horizontal timeline that tracks your progress.
+- **Location Guide**: An interactive map feature to find nearby polling booths or embassies.
+- **State Persistence**: Progress is saved locally so you can resume anytime.
 
-## React Compiler
+## Setup Instructions
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Expanding the ESLint configuration
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Map Integration
+
+This application currently uses a **Mock Map** for demonstration purposes. In a production environment, this would be replaced by a real mapping solution (like Google Maps or Leaflet) requiring an API key or a hosted tileset.
