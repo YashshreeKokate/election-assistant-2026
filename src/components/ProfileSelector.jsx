@@ -47,7 +47,7 @@ export default function ProfileSelector({ onSelect, language, t }) {
               key={id}
               role="listitem"
               onClick={() => onSelect(id)}
-              aria-label={`Select ${profile.title} — ${profile.description}`}
+              aria-label={`Select ${profile.name} — ${profile.description}`}
               className="group relative bg-white rounded-3xl p-7 text-left transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-100 overflow-hidden focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-india-saffron"
             >
               {/* Top accent bar */}
@@ -59,7 +59,7 @@ export default function ProfileSelector({ onSelect, language, t }) {
               </div>
 
               {/* Text */}
-              <h2 className="text-xl font-extrabold text-gray-900 mb-1">{profile.title}</h2>
+              <h2 className="text-xl font-extrabold text-gray-900 mb-1">{profile.name}</h2>
               <p className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-3">{profile.subtitle}</p>
               <p className="text-gray-500 text-sm leading-relaxed">{profile.description}</p>
 

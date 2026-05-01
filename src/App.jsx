@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import ProfileSelector from './components/ProfileSelector';
 import StepGuide from './components/StepGuide';
 import Timeline from './components/Timeline';
+import { fetchVerticals } from './services/verticalService';
 import { verticals } from './config/verticals';
 import { translations } from './i18n/translations';
 import { ArrowLeft, RotateCcw, Languages, Printer, Share2, MapPin } from 'lucide-react';
@@ -27,9 +28,33 @@ function App() {
 
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [shareToast, setShareToast] = useState(false);
+  const [verticalsList, setVerticalsList] = useState(verticals);
+  const [isDataLoading, setIsDataLoading] = useState(false); // No longer show loading screen by default
 
   const t = translations[language];
-  const selectedVertical = selectedVerticalId ? verticals[selectedVerticalId] : null;
+
+  // --- Data Fetching ---
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await fetchVerticals();
+        setVerticalsList(data);
+      } catch (err) {
+        console.error("Failed to load verticals from Firestore:", err);
+      } finally {
+        setIsDataLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
+  const rawVertical = selectedVerticalId ? verticalsList[selectedVerticalId] : null;
+  
+  // Merge raw vertical structure with localized content
+  const selectedVertical = rawVertical ? {
+    ...rawVertical,
+    ...(t.profiles[selectedVerticalId] || {})
+  } : null;
 
   // --- Persistence ---
   useEffect(() => {
@@ -43,22 +68,14 @@ function App() {
 
   // --- Handlers ---
   const handleSelect = (id) => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setSelectedVerticalId(id);
-      setCompletedSteps([]);
-      setIsTransitioning(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 200);
+    setSelectedVerticalId(id);
+    setCompletedSteps([]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBack = () => {
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setSelectedVerticalId(null);
-      setIsTransitioning(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 200);
+    setSelectedVerticalId(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const resetProgress = () => {
@@ -78,7 +95,7 @@ function App() {
   const handleShare = async () => {
     const url = window.location.href;
     const text = selectedVertical
-      ? `Check out my Election Guide for "${t.profiles[selectedVerticalId]?.title || selectedVertical.name}" on Election Assistant 2026!`
+      ? `Check out my Election Guide for "${selectedVertical.name}" on Election Assistant 2026!`
       : "Check out the Election Assistant 2026 — your guide to the voting process in India!";
 
     if (navigator.share) {
@@ -129,7 +146,7 @@ function App() {
             {selectedVertical && (
               <span className="hidden md:flex items-center gap-1 text-sm text-gray-500 min-w-0 ml-1">
                 <span aria-hidden="true">•</span>
-                <span className="truncate font-medium">{t.profiles[selectedVerticalId]?.title || selectedVertical.name}</span>
+                <span className="truncate font-medium">{selectedVertical.name}</span>
               </span>
             )}
           </div>
@@ -227,20 +244,25 @@ function App() {
       {/* ===== MAIN CONTENT ===== */}
       <main
         id="main-content"
-        className={`pt-8 transition-opacity duration-200 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
+        className={`pt-8 transition-opacity duration-200 ${isTransitioning || isDataLoading ? 'opacity-0' : 'opacity-100'}`}
       >
-        {!selectedVertical ? (
+        {isDataLoading ? (
+          <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+            <div className="w-12 h-12 border-4 border-india-blue border-t-transparent rounded-full animate-spin" />
+            <p className="text-gray-500 font-bold animate-pulse">Initializing Election Assistant...</p>
+          </div>
+        ) : !selectedVertical ? (
           <ProfileSelector onSelect={handleSelect} language={language} t={t} />
         ) : (
           <div className="max-w-7xl mx-auto px-4">
             {/* Screen-reader announcement */}
             <div role="status" aria-live="polite" aria-atomic="true" className="sr-only">
-              {`Now viewing ${t.profiles[selectedVerticalId]?.title || selectedVertical.name} guide. ${completedCount} of ${totalSteps} steps completed.`}
+              {`Now viewing ${selectedVertical.name} guide. ${completedCount} of ${totalSteps} steps completed.`}
             </div>
 
             <div className="mb-8">
               <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-3">
-                {(t.profiles[selectedVerticalId]?.title || selectedVertical.name)} Guide
+                {selectedVertical.name} Guide
               </h1>
               <p className="text-lg text-gray-600">{t.guide.subtitle}</p>
             </div>

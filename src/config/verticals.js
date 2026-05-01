@@ -1,6 +1,6 @@
 export const verticals = {
   "first-time": {
-    name: "First‑time Voter (India)",
+    name: "First-time Voter (India)",
     steps: [
       {
         title: "Confirm eligibility",
