@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserPlus, Globe, GraduationCap } from 'lucide-react';
+import { UserPlus, Globe, GraduationCap, HeartHandshake, Accessibility, Building2 } from 'lucide-react';
 
 const profiles = [
   {
@@ -25,6 +25,30 @@ const profiles = [
     icon: GraduationCap,
     color: 'from-india-green to-emerald-500',
     description: 'Studying away from home? Learn how to vote from your current residence.',
+  },
+  {
+    id: 'senior',
+    title: 'Senior Citizen',
+    subtitle: '85+ or Elderly Voters',
+    icon: HeartHandshake,
+    color: 'from-purple-500 to-fuchsia-600',
+    description: 'Special provisions and home voting options for our senior citizens.',
+  },
+  {
+    id: 'disability',
+    title: 'Voter with Disability',
+    subtitle: 'PwD Category',
+    icon: Accessibility,
+    color: 'from-pink-500 to-rose-600',
+    description: 'Accessible voting options, transport facilities, and special assistance.',
+  },
+  {
+    id: 'municipal',
+    title: 'Local-Body Voter',
+    subtitle: 'Municipal / Panchayat',
+    icon: Building2,
+    color: 'from-teal-500 to-emerald-600',
+    description: 'Information for local ward elections and municipal corporation voting.',
   }
 ];
 
