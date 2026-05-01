@@ -23,3 +23,28 @@
   border-color: rgb(255 255 255 / 0.2);
   box-shadow: var(--shadow-xl);
 }
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  /* Force all accordion step panels open */
+  [role="region"] {
+    display: block !important;
+  }
+
+  /* Hide interactive-only UI */
+  [role="progressbar"],
+  button.print-hide {
+    display: none !important;
+  }
+
+  /* Avoid page breaks inside step cards */
+  li {
+    break-inside: avoid;
+  }
+
+  /* Flatten background for ink saving */
+  body {
+    background: white !important;
+  }
+}
+

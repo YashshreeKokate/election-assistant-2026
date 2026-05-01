@@ -1,95 +1,76 @@
 import React from 'react';
-import { UserPlus, Globe, GraduationCap, HeartHandshake, Accessibility, Building2 } from 'lucide-react';
+import { UserPlus, Globe, GraduationCap, HeartHandshake, Accessibility, Building2, ArrowRight } from 'lucide-react';
 
-const profiles = [
-  {
-    id: 'first-time',
-    title: 'First-time Voter',
-    subtitle: 'Voting in India',
-    icon: UserPlus,
-    color: 'from-india-saffron to-orange-400',
-    description: 'Just turned 18? Discover how to register and cast your very first vote.',
-  },
-  {
-    id: 'nri',
-    title: 'NRI Voter',
-    subtitle: 'Overseas Citizen',
-    icon: Globe,
-    color: 'from-india-blue to-blue-600',
-    description: 'Living abroad? Find out how to participate in the democratic process.',
-  },
-  {
-    id: 'student',
-    title: 'Student Voter',
-    subtitle: 'College / University',
-    icon: GraduationCap,
-    color: 'from-india-green to-emerald-500',
-    description: 'Studying away from home? Learn how to vote from your current residence.',
-  },
-  {
-    id: 'senior',
-    title: 'Senior Citizen',
-    subtitle: '85+ or Elderly Voters',
-    icon: HeartHandshake,
-    color: 'from-purple-500 to-fuchsia-600',
-    description: 'Special provisions and home voting options for our senior citizens.',
-  },
-  {
-    id: 'disability',
-    title: 'Voter with Disability',
-    subtitle: 'PwD Category',
-    icon: Accessibility,
-    color: 'from-pink-500 to-rose-600',
-    description: 'Accessible voting options, transport facilities, and special assistance.',
-  },
-  {
-    id: 'municipal',
-    title: 'Local-Body Voter',
-    subtitle: 'Municipal / Panchayat',
-    icon: Building2,
-    color: 'from-teal-500 to-emerald-600',
-    description: 'Information for local ward elections and municipal corporation voting.',
-  }
-];
+const profileMeta = {
+  'first-time': { icon: UserPlus, color: 'from-india-saffron to-orange-400', accentBg: 'bg-orange-50', accentText: 'text-orange-600' },
+  nri:          { icon: Globe,     color: 'from-india-blue to-blue-600',     accentBg: 'bg-blue-50',   accentText: 'text-blue-600' },
+  student:      { icon: GraduationCap, color: 'from-india-green to-emerald-500', accentBg: 'bg-emerald-50', accentText: 'text-emerald-600' },
+  senior:       { icon: HeartHandshake, color: 'from-purple-500 to-fuchsia-600', accentBg: 'bg-purple-50', accentText: 'text-purple-600' },
+  disability:   { icon: Accessibility,  color: 'from-pink-500 to-rose-600',     accentBg: 'bg-pink-50',   accentText: 'text-pink-600' },
+  municipal:    { icon: Building2,      color: 'from-teal-500 to-emerald-600',  accentBg: 'bg-teal-50',   accentText: 'text-teal-600' },
+};
 
-export default function ProfileSelector({ onSelect }) {
+const profileOrder = ['first-time', 'nri', 'student', 'senior', 'disability', 'municipal'];
+
+export default function ProfileSelector({ onSelect, language, t }) {
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-12">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
-          Welcome to the <span className="text-transparent bg-clip-text bg-gradient-to-r from-india-saffron via-india-blue to-india-green">Election Assistant</span>
+    <div className="w-full max-w-6xl mx-auto px-4 py-10">
+      {/* Hero */}
+      <div className="text-center mb-14">
+        <p className="text-sm font-bold uppercase tracking-widest text-india-saffron mb-3">
+          India General Elections 2026
+        </p>
+        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-5 tracking-tight leading-tight">
+          {t.home.heading}{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-india-saffron via-india-blue to-india-green">
+            {t.home.subheading}
+          </span>
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Your personalized guide to the democratic process. Select your voter profile below to get started.
+        <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+          {t.home.description}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-        {profiles.map((profile) => (
-          <button
-            key={profile.id}
-            onClick={() => onSelect(profile.id)}
-            className="group relative bg-white rounded-3xl p-8 text-left transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-100 overflow-hidden"
-          >
-            <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${profile.color}`} />
-            
-            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-gradient-to-br ${profile.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-              <profile.icon size={32} />
-            </div>
-            
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">{profile.title}</h3>
-            <div className="text-sm font-semibold tracking-wider uppercase mb-4 text-gray-500">{profile.subtitle}</div>
-            <p className="text-gray-600 leading-relaxed">
-              {profile.description}
-            </p>
-            
-            <div className="mt-8 flex items-center text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ color: 'inherit' }}>
-              <span className={`text-transparent bg-clip-text bg-gradient-to-r ${profile.color}`}>
-                Get Started &rarr;
-              </span>
-            </div>
-          </button>
-        ))}
+      {/* Profile Grid */}
+      <div
+        role="list"
+        aria-label="Voter profile options"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        {profileOrder.map((id) => {
+          const meta = profileMeta[id];
+          const profile = t.profiles[id];
+          const Icon = meta.icon;
+
+          return (
+            <button
+              key={id}
+              role="listitem"
+              onClick={() => onSelect(id)}
+              aria-label={`Select ${profile.title} — ${profile.description}`}
+              className="group relative bg-white rounded-3xl p-7 text-left transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-100 overflow-hidden focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-india-saffron"
+            >
+              {/* Top accent bar */}
+              <div className={`absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${meta.color}`} />
+
+              {/* Icon */}
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 bg-gradient-to-br ${meta.color} text-white shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <Icon size={28} aria-hidden="true" />
+              </div>
+
+              {/* Text */}
+              <h2 className="text-xl font-extrabold text-gray-900 mb-1">{profile.title}</h2>
+              <p className="text-xs font-bold tracking-widest uppercase text-gray-400 mb-3">{profile.subtitle}</p>
+              <p className="text-gray-500 text-sm leading-relaxed">{profile.description}</p>
+
+              {/* CTA */}
+              <div className={`mt-6 flex items-center gap-1.5 text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${meta.accentText}`}>
+                {t.home.getStarted}
+                <ArrowRight size={16} aria-hidden="true" />
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
