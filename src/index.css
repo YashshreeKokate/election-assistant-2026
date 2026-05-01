@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-india-saffron: #FF9933;
+  --color-india-green: #138808;
+  --color-india-blue: #000080;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-900);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@utility glass-panel {
+  background-color: rgb(255 255 255 / 0.8);
+  backdrop-filter: blur(12px);
+  border-width: 1px;
+  border-color: rgb(255 255 255 / 0.2);
+  box-shadow: var(--shadow-xl);
+}
